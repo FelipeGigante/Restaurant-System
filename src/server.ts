@@ -12,8 +12,12 @@ const app = Fastify({
 })
 
 app.register(cors, {
-  origin: true,
-})
+  origin: [
+    'http://localhost:3001',
+    'https://restaurant-system-swart.vercel.app',
+  ],
+  credentials: true
+});
 
 // Registrar rotas
 app.register(produtosRoutes, { prefix: '/produtos' })
