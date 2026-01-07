@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { apiClient } from '@/config/api'
 
 interface Cliente {
   id: string
@@ -25,8 +26,7 @@ export default function ClientesPage() {
 
   const fetchClientes = async () => {
     try {
-      const res = await fetch('http://localhost:3000/clientes')
-      const data = await res.json()
+      const data = await apiClient('/clientes')
       setClientes(data)
     } catch (error) {
       console.error('Erro ao buscar clientes:', error)
@@ -36,20 +36,17 @@ export default function ClientesPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await fetch('http://localhost:3000/clientes', {
+      await apiClient('/clientes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nome: formData.nome,
           email: formData.email || undefined,
           telefone: formData.telefone || undefined,
         }),
       })
-      if (res.ok) {
-        setShowModal(false)
-        setFormData({ nome: '', email: '', telefone: '' })
-        fetchClientes()
-      }
+      setShowModal(false)
+      setFormData({ nome: '', email: '', telefone: '' })
+      fetchClientes()
     } catch (error) {
       console.error('Erro ao criar cliente:', error)
     }

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { apiClient } from '@/config/api'
 
 interface Menu {
   id: string
@@ -36,8 +37,7 @@ export default function CardapiosPage() {
 
   const fetchMenus = async () => {
     try {
-      const res = await fetch('http://localhost:3000/menus')
-      const data = await res.json()
+      const data = await apiClient('/menus')
       setMenus(data)
     } catch (error) {
       console.error('Erro ao buscar menus:', error)
@@ -47,16 +47,13 @@ export default function CardapiosPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await fetch('http://localhost:3000/menus', {
+      await apiClient('/menus', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-      if (res.ok) {
-        setShowModal(false)
-        setFormData({ nome: '', descricao: '' })
-        fetchMenus()
-      }
+      setShowModal(false)
+      setFormData({ nome: '', descricao: '' })
+      fetchMenus()
     } catch (error) {
       console.error('Erro ao criar menu:', error)
     }

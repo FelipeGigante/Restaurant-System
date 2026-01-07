@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { apiClient } from '@/config/api'
 
 interface Stats {
   eventos: number
@@ -19,23 +20,19 @@ export default function Dashboard() {
   })
 
   useEffect(() => {
-    fetch('http://localhost:3000/eventos')
-      .then((res) => res.json())
+    apiClient('/eventos')
       .then((data) => setStats((prev) => ({ ...prev, eventos: data.length })))
       .catch((err) => console.error(err))
 
-    fetch('http://localhost:3000/produtos')
-      .then((res) => res.json())
+    apiClient('/produtos')
       .then((data) => setStats((prev) => ({ ...prev, produtos: data.length })))
       .catch((err) => console.error(err))
 
-    fetch('http://localhost:3000/assets')
-      .then((res) => res.json())
+    apiClient('/assets')
       .then((data) => setStats((prev) => ({ ...prev, assets: data.length })))
       .catch((err) => console.error(err))
 
-    fetch('http://localhost:3000/clientes')
-      .then((res) => res.json())
+    apiClient('/clientes')
       .then((data) => setStats((prev) => ({ ...prev, clientes: data.length })))
       .catch((err) => console.error(err))
   }, [])

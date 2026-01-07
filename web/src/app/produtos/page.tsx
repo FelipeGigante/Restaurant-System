@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { apiClient, API_URL } from '@/config/api'
 
 interface Produto {
   id: string
@@ -26,8 +27,7 @@ export default function ProdutosPage() {
 
   const fetchProdutos = async () => {
     try {
-      const res = await fetch('http://localhost:3000/produtos')
-      const data = await res.json()
+      const data = await apiClient('/produtos')
       setProdutos(data)
     } catch (error) {
       console.error('Erro:', error)
@@ -37,16 +37,13 @@ export default function ProdutosPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await fetch('http://localhost:3000/produtos', {
+      await apiClient('/produtos', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-      if (res.ok) {
-        setShowModal(false)
-        setFormData({ nome: '', unidade: 'kg', estoqueAtual: 0, estoqueMinimo: 0 })
-        fetchProdutos()
-      }
+      setShowModal(false)
+      setFormData({ nome: '', unidade: 'kg', estoqueAtual: 0, estoqueMinimo: 0 })
+      fetchProdutos()
     } catch (error) {
       console.error('Erro:', error)
     }

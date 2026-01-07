@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { apiClient } from '@/config/api'
 
 interface Asset {
   id: string
@@ -25,8 +26,7 @@ export default function EquipamentosPage() {
 
   const fetchAssets = async () => {
     try {
-      const res = await fetch('http://localhost:3000/assets')
-      const data = await res.json()
+      const data = await apiClient('/assets')
       setAssets(data)
     } catch (error) {
       console.error('Erro ao buscar assets:', error)
@@ -36,16 +36,13 @@ export default function EquipamentosPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await fetch('http://localhost:3000/assets', {
+      await apiClient('/assets', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-      if (res.ok) {
-        setShowModal(false)
-        setFormData({ nome: '', tipo: 'EQUIPAMENTO', quantidadeTotal: 0 })
-        fetchAssets()
-      }
+      setShowModal(false)
+      setFormData({ nome: '', tipo: 'EQUIPAMENTO', quantidadeTotal: 0 })
+      fetchAssets()
     } catch (error) {
       console.error('Erro ao criar asset:', error)
     }

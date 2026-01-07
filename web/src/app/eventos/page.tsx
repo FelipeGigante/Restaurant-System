@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { apiClient } from '@/config/api'
 
 interface Evento {
   id: string
@@ -27,8 +28,7 @@ export default function EventosPage() {
 
   const fetchEventos = async () => {
     try {
-      const res = await fetch('http://localhost:3000/eventos')
-      const data = await res.json()
+      const data = await apiClient('/eventos')
       setEventos(data)
     } catch (error) {
       console.error('Erro ao buscar eventos:', error)
