@@ -56,8 +56,8 @@ export default function EquipamentosPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-6">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Equipamentos e Utensílios</h1>
           <p className="text-gray-500 mt-1">
@@ -80,7 +80,7 @@ export default function EquipamentosPage() {
       </div>
 
       {/* Cards de Resumo */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="text-sm text-gray-500 mb-1">Total de Itens</div>
           <div className="text-2xl font-bold">{assets.length}</div>
@@ -100,7 +100,7 @@ export default function EquipamentosPage() {
       </div>
 
       {/* Tabela */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden mb-6">
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
@@ -243,6 +243,22 @@ export default function EquipamentosPage() {
           </div>
         </div>
       )}
+
+      {/* Example equipment card - remove this section if not needed */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {assets.map((asset) => (
+          <div key={asset.id} className="bg-white shadow-md rounded-md p-4">
+            <h2 className="text-lg font-semibold">{asset.nome}</h2>
+            <p className="text-gray-600">{asset.tipo}</p>
+            <p className="text-gray-600">
+              Quantidade Total: {asset.quantidadeTotal}
+            </p>
+            <p className="text-gray-600">
+              Disponível: {asset.quantidadeDisponivel}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

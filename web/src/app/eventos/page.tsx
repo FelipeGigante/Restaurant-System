@@ -67,8 +67,8 @@ export default function EventosPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-6">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Eventos</h1>
           <p className="text-gray-500 mt-1">Gerencie seus eventos e planejamentos</p>
@@ -81,46 +81,44 @@ export default function EventosPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {eventos.map((evento) => (
           <div
             key={evento.id}
-            className="bg-card rounded-lg border border-border hover:shadow-lg transition-shadow overflow-hidden"
+            className="bg-white shadow-md rounded-md p-4"
           >
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold mb-1">{evento.nome}</h3>
-                  <p className="text-sm text-gray-500">{evento.cliente.nome}</p>
-                </div>
-                {getStatusBadge(evento.status)}
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1">
+                <h2 className="text-lg font-semibold mb-1">{evento.nome}</h2>
+                <p className="text-sm text-gray-500">{evento.cliente.nome}</p>
               </div>
-
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-400">📅</span>
-                  <span>{formatDate(evento.data)}</span>
-                </div>
-                {evento.cidade && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400">📍</span>
-                    <span>{evento.cidade}</span>
-                  </div>
-                )}
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-400">👥</span>
-                  <span>{evento.participantes} participantes</span>
-                </div>
-                {evento.menu && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-400">📋</span>
-                    <span>{evento.menu.nome}</span>
-                  </div>
-                )}
-              </div>
+              {getStatusBadge(evento.status)}
             </div>
 
-            <div className="bg-gray-50 px-6 py-3 flex items-center justify-between border-t border-border">
+            <div className="space-y-2 text-sm mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-400">📅</span>
+                <span>{formatDate(evento.data)}</span>
+              </div>
+              {evento.cidade && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-400">📍</span>
+                  <span>{evento.cidade}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                <span className="text-gray-400">👥</span>
+                <span>{evento.participantes} participantes</span>
+              </div>
+              {evento.menu && (
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-400">📋</span>
+                  <span>{evento.menu.nome}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between">
               <Link
                 href={`/eventos/${evento.id}`}
                 className="text-primary-500 hover:text-primary-600 font-medium text-sm"

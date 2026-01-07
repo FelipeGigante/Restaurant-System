@@ -58,8 +58,8 @@ export default function ClientesPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-6">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Clientes</h1>
           <p className="text-gray-500 mt-1">Gerencie sua carteira de clientes</p>
@@ -80,7 +80,7 @@ export default function ClientesPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white rounded-lg border border-gray-200 p-6">
           <div className="text-sm text-gray-500 mb-1">Total de Clientes</div>
           <div className="text-2xl font-bold">{clientes.length}</div>

@@ -56,64 +56,35 @@ export default function ProdutosPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-6">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Produtos</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Produtos</h1>
           <p className="text-[13px] text-gray-500 mt-1">Gerencie seu estoque</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="h-8 px-3 bg-gray-900 text-white rounded-md text-[13px] font-medium hover:bg-gray-800"
+          className="h-10 px-4 bg-gray-900 text-white rounded-md text-[13px] font-medium hover:bg-gray-800"
         >
           Novo Produto
         </button>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200/60 overflow-hidden">
-        <table className="w-full">
-          <thead className="border-b border-gray-200/60">
-            <tr>
-              <th className="px-5 py-3 text-left text-[11px] font-medium text-gray-500 uppercase">
-                Produto
-              </th>
-              <th className="px-5 py-3 text-left text-[11px] font-medium text-gray-500 uppercase">
-                Unidade
-              </th>
-              <th className="px-5 py-3 text-left text-[11px] font-medium text-gray-500 uppercase">
-                Estoque
-              </th>
-              <th className="px-5 py-3 text-left text-[11px] font-medium text-gray-500 uppercase">
-                Mínimo
-              </th>
-              <th className="px-5 py-3 text-left text-[11px] font-medium text-gray-500 uppercase">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {produtos.map((p) => {
-              const status = getStatus(p.estoqueAtual, p.estoqueMinimo)
-              return (
-                <tr key={p.id} className="hover:bg-gray-50/50">
-                  <td className="px-5 py-3">
-                    <div className="text-sm font-medium text-gray-900">{p.nome}</div>
-                  </td>
-                  <td className="px-5 py-3 text-[13px] text-gray-600">{p.unidade}</td>
-                  <td className="px-5 py-3 text-sm font-semibold text-gray-900">
-                    {p.estoqueAtual}
-                  </td>
-                  <td className="px-5 py-3 text-[13px] text-gray-500">{p.estoqueMinimo}</td>
-                  <td className="px-5 py-3">
-                    <span className={`px-2 py-1 rounded text-[11px] font-medium ${status.color}`}>
-                      {status.label}
-                    </span>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {produtos.map((p) => {
+          const status = getStatus(p.estoqueAtual, p.estoqueMinimo)
+          return (
+            <div key={p.id} className="bg-white shadow-md rounded-md p-4">
+              <h2 className="text-lg font-semibold">{p.nome}</h2>
+              <p className="text-gray-600">{`Unidade: ${p.unidade}`}</p>
+              <p className="text-gray-900 font-medium">{`Estoque Atual: ${p.estoqueAtual}`}</p>
+              <p className="text-gray-500">{`Estoque Mínimo: ${p.estoqueMinimo}`}</p>
+              <span className={`mt-2 inline-block px-3 py-1 rounded-full text-[11px] font-medium ${status.color}`}>
+                {status.label}
+              </span>
+            </div>
+          )
+        })}
       </div>
 
       {showModal && (
@@ -132,7 +103,7 @@ export default function ProdutosPage() {
                   required
                   value={formData.nome}
                   onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                  className="w-full h-9 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                  className="w-full h-10 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -143,7 +114,7 @@ export default function ProdutosPage() {
                   <select
                     value={formData.unidade}
                     onChange={(e) => setFormData({ ...formData, unidade: e.target.value })}
-                    className="w-full h-9 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                    className="w-full h-10 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
                   >
                     <option value="kg">kg</option>
                     <option value="un">unidade</option>
@@ -164,7 +135,7 @@ export default function ProdutosPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, estoqueAtual: parseFloat(e.target.value) })
                     }
-                    className="w-full h-9 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                    className="w-full h-10 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
                   />
                 </div>
               </div>
@@ -181,20 +152,20 @@ export default function ProdutosPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, estoqueMinimo: parseFloat(e.target.value) })
                   }
-                  className="w-full h-9 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
+                  className="w-full h-10 px-3 text-[13px] border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-900 focus:border-gray-900"
                 />
               </div>
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 h-9 px-3 border border-gray-300 rounded-md text-[13px] font-medium hover:bg-gray-50"
+                  className="flex-1 h-10 px-3 border border-gray-300 rounded-md text-[13px] font-medium hover:bg-gray-50"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 h-9 px-3 bg-gray-900 text-white rounded-md text-[13px] font-medium hover:bg-gray-800"
+                  className="flex-1 h-10 px-3 bg-gray-900 text-white rounded-md text-[13px] font-medium hover:bg-gray-800"
                 >
                   Criar
                 </button>

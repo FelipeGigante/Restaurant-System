@@ -27,14 +27,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="h-full">
       <body className={`${geistSans.variable} ${geistMono.variable} h-full`}>
-        <div className="flex h-full">
+        <div className="flex h-screen">
           <Sidebar />
-          <div className="flex-1 flex flex-col min-w-0" style={{ marginLeft: '224px' }}>
+          <div className="flex-1 flex flex-col">
             <Header />
-            <main className="flex-1 overflow-y-auto p-6">
-              <div className="max-w-6xl mx-auto">
-                {children}
-              </div>
+            <main className="flex-1 p-6 bg-white shadow-md rounded-md">
+              {children}
             </main>
           </div>
         </div>

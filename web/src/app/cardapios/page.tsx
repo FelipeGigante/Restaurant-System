@@ -60,8 +60,8 @@ export default function CardapiosPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-6">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Cardápios</h1>
           <p className="text-gray-500 mt-1">
@@ -83,106 +83,87 @@ export default function CardapiosPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {menus.map((menu) => (
           <div
             key={menu.id}
-            className="bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow"
+            className="bg-white shadow-md rounded-md p-4"
           >
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-xl font-semibold mb-1">{menu.nome}</h3>
-              {menu.descricao && (
-                <p className="text-sm text-gray-500">{menu.descricao}</p>
-              )}
-            </div>
+            <h2 className="text-lg font-semibold">{menu.nome}</h2>
+            {menu.descricao && (
+              <p className="text-gray-600 mb-4">{menu.descricao}</p>
+            )}
 
-            <div className="p-6">
-              <div className="space-y-4">
-                {/* Produtos */}
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                    <span>📦</span>
-                    <span>Ingredientes ({menu.produtos.length})</span>
-                  </h4>
-                  {menu.produtos.length > 0 ? (
-                    <ul className="space-y-2">
-                      {menu.produtos.slice(0, 3).map((item, index) => (
-                        <li
-                          key={index}
-                          className="flex items-center justify-between text-sm bg-gray-50 px-3 py-2 rounded"
-                        >
-                          <span className="text-gray-700">
-                            {item.produto.nome}
-                          </span>
-                          <span className="text-gray-500 font-medium">
-                            {item.quantidadePorPessoa} {item.produto.unidade}/pessoa
-                          </span>
-                        </li>
-                      ))}
-                      {menu.produtos.length > 3 && (
-                        <li className="text-xs text-gray-500 pl-3">
-                          +{menu.produtos.length - 3} mais...
-                        </li>
-                      )}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-gray-400 italic">
-                      Nenhum ingrediente cadastrado
-                    </p>
-                  )}
-                </div>
-
-                {/* Assets */}
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                    <span>🔧</span>
-                    <span>Equipamentos ({menu.assets.length})</span>
-                  </h4>
-                  {menu.assets.length > 0 ? (
-                    <ul className="space-y-2">
-                      {menu.assets.slice(0, 3).map((item, index) => (
-                        <li
-                          key={index}
-                          className="flex items-center justify-between text-sm bg-gray-50 px-3 py-2 rounded"
-                        >
-                          <span className="text-gray-700">
-                            {item.asset.nome}
-                          </span>
-                          <span className="text-gray-500 font-medium">
-                            {item.tipo === 'PER_PERSON'
-                              ? `${item.quantidade}/pessoa`
-                              : `${item.quantidade}/evento`}
-                          </span>
-                        </li>
-                      ))}
-                      {menu.assets.length > 3 && (
-                        <li className="text-xs text-gray-500 pl-3">
-                          +{menu.assets.length - 3} mais...
-                        </li>
-                      )}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-gray-400 italic">
-                      Nenhum equipamento cadastrado
-                    </p>
-                  )}
-                </div>
+            <div className="space-y-4">
+              {/* Produtos */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <span>📦</span>
+                  <span>Ingredientes ({menu.produtos.length})</span>
+                </h4>
+                {menu.produtos.length > 0 ? (
+                  <ul className="space-y-2">
+                    {menu.produtos.slice(0, 3).map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center justify-between text-sm bg-gray-50 px-3 py-2 rounded"
+                      >
+                        <span className="text-gray-700">
+                          {item.produto.nome}
+                        </span>
+                        <span className="text-gray-500 font-medium">
+                          {item.quantidadePorPessoa} {item.produto.unidade}/pessoa
+                        </span>
+                      </li>
+                    ))}
+                    {menu.produtos.length > 3 && (
+                      <li className="text-xs text-gray-500 pl-3">
+                        +{menu.produtos.length - 3} mais...
+                      </li>
+                    )}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-gray-400 italic">
+                    Nenhum ingrediente cadastrado
+                  </p>
+                )}
               </div>
-            </div>
 
-            <div className="bg-gray-50 px-6 py-3 border-t border-gray-200">
-              <button
-                className="text-sm font-medium transition-colors"
-                style={{ color: '#ff4800' }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = '#e63f00')
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = '#ff4800')
-                }
-              >
-                Ver Detalhes →
-              </button>
+              {/* Assets */}
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                  <span>🔧</span>
+                  <span>Equipamentos ({menu.assets.length})</span>
+                </h4>
+                {menu.assets.length > 0 ? (
+                  <ul className="space-y-2">
+                    {menu.assets.slice(0, 3).map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center justify-between text-sm bg-gray-50 px-3 py-2 rounded"
+                      >
+                        <span className="text-gray-700">
+                          {item.asset.nome}
+                        </span>
+                        <span className="text-gray-500 font-medium">
+                          {item.tipo === 'PER_PERSON'
+                            ? `${item.quantidade}/pessoa`
+                            : `${item.quantidade}/evento`}
+                        </span>
+                      </li>
+                    ))}
+                    {menu.assets.length > 3 && (
+                      <li className="text-xs text-gray-500 pl-3">
+                        +{menu.assets.length - 3} mais...
+                      </li>
+                    )}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-gray-400 italic">
+                    Nenhum equipamento cadastrado
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         ))}
