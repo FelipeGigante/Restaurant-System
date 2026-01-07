@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Cliente do evento
+model Cliente {
+  id        String   @id @default(uuid())
+  nome      String
+  email     String?
+  telefone  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  eventos Evento[]
+}
+
+// Produtos alimentícios e consumíveis (tomate, queijo, guardanapo, carvão)
+model Produto {
+  id               String   @id @default(uuid())
+  nome             String
+  unidade          String   // kg, un, litro, pacote
+  estoqueAtual     Float    @default(0)
+  estoqueMinimo    Float    @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  menuProdutos     MenuProduto[]
+  reservas         Reserva[]
+  movimentacoes    Movimentacao[]
+}
+
+// Equipamentos e utensílios (airfryer, faca, garfo, prato)
+model Asset {
+  id               String   @id @default(uuid())
+  nome             String
+  tipo             String   // EQUIPAMENTO, UTENSILIO
+  quantidadeTotal  Int      @default(0)
+  quantidadeDisponivel Int  @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  menuAssets       MenuAsset[]
+  alocacoes        Alocacao[]
+}
+
+// Tipo de evento (Casamento, Aniversário, Corporativo)
+model TipoEvento {
+  id        String   @id @default(uuid())
+  nome      String
+  descricao String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  eventos   Evento[]
+}
+
+// Cardápio/Receita
+model Menu {
+  id          String   @id @default(uuid())
+  nome        String
+  descricao   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  produtos    MenuProduto[]
+  assets      MenuAsset[]
+  eventos     Evento[]
+}
+
+// Produtos necessários por pessoa no cardápio
+model MenuProduto {
+  id                String   @id @default(uuid())
+  menuId            String
+  produtoId         String
+  quantidadePorPessoa Float
+  createdAt         DateTime @default(now())
+
+  menu              Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  produto           Produto  @relation(fields: [produtoId], references: [id])
+
+  @@unique([menuId, produtoId])
+}
+
+// Assets necessários no cardápio
+model MenuAsset {
+  id          String   @id @default(uuid())
+  menuId      String
+  assetId     String
+  tipo        String   // PER_EVENT, PER_PERSON
+  quantidade  Int      @default(1)
+  createdAt   DateTime @default(now())
+
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  asset       Asset    @relation(fields: [assetId], references: [id])
+
+  @@unique([menuId, assetId])
+}
+
+// Evento
+model Evento {
+  id               String   @id @default(uuid())
+  clienteId        String
+  tipoEventoId     String?
+  menuId           String?
+  nome             String
+  data             DateTime
+  cidade           String?
+  participantes    Int      @default(0)
+  status           String   @default("DRAFT") // DRAFT, PLANNED, IN_PROGRESS, CLOSED, CANCELED
+  valorTotal       Float?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  cliente          Cliente      @relation(fields: [clienteId], references: [id])
+  tipoEvento       TipoEvento?  @relation(fields: [tipoEventoId], references: [id])
+  menu             Menu?        @relation(fields: [menuId], references: [id])
+  reservas         Reserva[]
+  alocacoes        Alocacao[]
+  pagamentos       Pagamento[]
+}
+
+// Reserva de produtos para evento
+model Reserva {
+  id                String   @id @default(uuid())
+  eventoId          String
+  produtoId         String
+  quantidadeReservada Float
+  quantidadeConsumida Float?
+  quantidadeRetornada Float?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  evento            Evento   @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  produto           Produto  @relation(fields: [produtoId], references: [id])
+
+  @@unique([eventoId, produtoId])
+}
+
+// Alocação de assets para evento
+model Alocacao {
+  id                String   @id @default(uuid())
+  eventoId          String
+  assetId           String
+  quantidadeAlocada Int
+  quantidadePerdida Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  evento            Evento   @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  asset             Asset    @relation(fields: [assetId], references: [id])
+
+  @@unique([eventoId, assetId])
+}
+
+// Movimentações de estoque (auditoria)
+model Movimentacao {
+  id          String   @id @default(uuid())
+  produtoId   String
+  tipo        String   // ENTRADA, SAIDA, RESERVA, CONSUMO, RETORNO, AJUSTE
+  quantidade  Float
+  eventoId    String?
+  observacao  String?
+  createdAt   DateTime @default(now())
+
+  produto     Produto  @relation(fields: [produtoId], references: [id])
+}
+
+// Pagamento
+model Pagamento {
+  id          String   @id @default(uuid())
+  eventoId    String
+  valor       Float
+  dataPagamento DateTime
+  formaPagamento String? // PIX, CARTAO, DINHEIRO, TRANSFERENCIA
+  status      String   @default("PENDENTE") // PENDENTE, PAGO, CANCELADO
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  evento      Evento   @relation(fields: [eventoId], references: [id])
+}
